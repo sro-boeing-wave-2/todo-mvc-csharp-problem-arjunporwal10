@@ -1,0 +1,14 @@
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\bin\Debug\netcoreapp2.1\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\bin\Debug\netcoreapp2.1\xunit.runner.reporters.netcoreapp10.dll
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\bin\Debug\netcoreapp2.1\xunit.runner.utility.netcoreapp10.dll
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\bin\Debug\netcoreapp2.1\ToDoNotesXUnitTest.deps.json
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\bin\Debug\netcoreapp2.1\ToDoNotesXUnitTest.runtimeconfig.json
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\bin\Debug\netcoreapp2.1\ToDoNotesXUnitTest.runtimeconfig.dev.json
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\bin\Debug\netcoreapp2.1\ToDoNotesXUnitTest.dll
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\bin\Debug\netcoreapp2.1\ToDoNotesXUnitTest.pdb
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\obj\Debug\netcoreapp2.1\ToDoNotesXUnitTest.csprojAssemblyReference.cache
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\obj\Debug\netcoreapp2.1\ToDoNotesXUnitTest.csproj.CoreCompileInputs.cache
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\obj\Debug\netcoreapp2.1\ToDoNotesXUnitTest.AssemblyInfoInputs.cache
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\obj\Debug\netcoreapp2.1\ToDoNotesXUnitTest.AssemblyInfo.cs
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\obj\Debug\netcoreapp2.1\ToDoNotesXUnitTest.dll
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\obj\Debug\netcoreapp2.1\ToDoNotesXUnitTest.pdb
