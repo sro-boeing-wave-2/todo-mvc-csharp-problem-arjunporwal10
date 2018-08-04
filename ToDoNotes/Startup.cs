@@ -29,12 +29,16 @@ namespace ToDoNotes
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            // Adding service for SWAGGER
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
+            // Added Services for ToDoNotesContext database
             services.AddDbContext<ToDoNotesContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ToDoNotesContext")));
+            // Added services for interface class and its child class which implements its methods
+            services.AddScoped<INoteService, NoteService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

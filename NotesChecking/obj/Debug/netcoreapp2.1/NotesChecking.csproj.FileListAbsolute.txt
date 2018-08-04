@@ -1,0 +1,9 @@
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\NotesChecking\bin\Debug\netcoreapp2.1\NotesChecking.deps.json
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\NotesChecking\bin\Debug\netcoreapp2.1\NotesChecking.dll
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\NotesChecking\bin\Debug\netcoreapp2.1\NotesChecking.pdb
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\NotesChecking\obj\Debug\netcoreapp2.1\NotesChecking.csprojAssemblyReference.cache
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\NotesChecking\obj\Debug\netcoreapp2.1\NotesChecking.csproj.CoreCompileInputs.cache
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\NotesChecking\obj\Debug\netcoreapp2.1\NotesChecking.AssemblyInfoInputs.cache
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\NotesChecking\obj\Debug\netcoreapp2.1\NotesChecking.AssemblyInfo.cs
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\NotesChecking\obj\Debug\netcoreapp2.1\NotesChecking.dll
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\NotesChecking\obj\Debug\netcoreapp2.1\NotesChecking.pdb
