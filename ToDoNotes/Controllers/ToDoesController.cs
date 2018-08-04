@@ -118,6 +118,16 @@ namespace Notes.Controllers
 
             return Ok(toDo);
         }
+        // if you delete all you have to again migrate and update the database
+        [HttpDelete]
+        [Route("all")]
+        public async Task<IActionResult> DeleteAll([FromRoute] int id)
+        {
+
+            await _context.Database.EnsureDeletedAsync();
+
+            return Ok();
+        }
 
         private bool ToDoExists(int id)
         {
