@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToDoNotes.Models;
 
-namespace ToDoNotes.Models
+namespace ToDoNotes.Services
 {
     //Interface created for Notes
     public interface INoteService
@@ -61,7 +61,7 @@ namespace ToDoNotes.Models
             existing.IsPinned = note.IsPinned;
             existing.Labels = note.Labels;
             existing.CheckLists = note.CheckLists;
-            
+
         }
 
         public void Delete(int id)
@@ -69,8 +69,7 @@ namespace ToDoNotes.Models
             var existing = Notes.First(_ => _.Id == id);
             Notes.Remove(existing);
         }
-       
+
     }
 
-    
 }
