@@ -1,5 +1,5 @@
 language: csharp
-solution: todo-mvc-csharp-problem-arjunporwal10.sln
+solution: ToDoNotes.sln
 notifications:
   email:
     on_success: always
