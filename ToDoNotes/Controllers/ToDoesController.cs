@@ -121,10 +121,13 @@ namespace Notes.Controllers
         // if you delete all you have to again migrate and update the database
         [HttpDelete]
         [Route("all")]
-        public async Task<IActionResult> DeleteAll([FromRoute] int id)
+        public async Task<IActionResult> DeleteAll()
         {
-
-            await _context.Database.EnsureDeletedAsync();
+            var notes = _context.ToDo.Include(x => x.CheckLists).Include(x => x.Labels);
+            _context.ToDo.RemoveRange(notes);
+            await _context.SaveChangesAsync();
+            // await _context.Database.EnsureDeletedAsync();
+            // if you delete all you have to again migrate and update the database using above commented statement
 
             return Ok();
         }
