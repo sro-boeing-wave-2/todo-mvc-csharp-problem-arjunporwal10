@@ -72,7 +72,6 @@ namespace ToDoNotes.Services
         {
             var existing = Notes.First(_ => _.Id == id);
             Notes.Remove(existing);
-
             return Task.CompletedTask;
         }
 
