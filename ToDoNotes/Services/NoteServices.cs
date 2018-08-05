@@ -1,4 +1,5 @@
 ﻿using GenFu;
+using Microsoft.EntityFrameworkCore;
 using Notes.Models;
 using System;
 using System.Collections.Generic;
@@ -11,68 +12,71 @@ namespace ToDoNotes.Services
     //Interface created for Notes
     public interface INoteService
     {
-        Task<IEnumerable<ToDo>> GetAll();
+        Task<List<ToDo>> GetAll();
         Task<ToDo> Get(int id);
+        Task<List<ToDo>> GetByQuery(bool? Ispinned = null,string title = "", string labelName = "");
         Task<ToDo> Add(ToDo note);
         Task Update(int id, ToDo note);
         Task Delete(int id);
+        Task DeleteAll();
     }
-    // This class is implementing the methods of interface INoteService
-    // Need to upgrade these methods 
+    // This class is implementing the methods of interface INoteService 
     public class NoteService : INoteService
     {
-        private List<ToDo> Notes { get; set; }
+        private readonly PrototypeContext _context;
+        //private List<ToDo> Notes { get; set; }
 
-        public NoteService()
+        public NoteService(PrototypeContext context)
         {
-            var i = 0;
-            // Using GenFu to populate 
-          Notes = A.ListOf<ToDo>(50);
-            Notes.ForEach(note =>
-            {
-                i++;
-                note.Id = i;
-            });
+            _context = context;
         }
-
-        public Task<IEnumerable<ToDo>> GetAll()
+        public Task<List<ToDo>> GetAll()
         {
-            var result = Notes.Select(x => x);
-            return Task.FromResult(result);
+            return _context.ToDo.Include(x => x.CheckLists).Include(x => x.Labels).ToListAsync();
+           // return Task.FromResult(result);
         }
-
         public Task<ToDo> Get(int id)
         {
-            var result = Notes.First(_ => _.Id == id);
+            var result = _context.ToDo.Include(x => x.CheckLists).Include(x => x.Labels).First(_ => _.Id == id);
             return Task.FromResult(result);
         }
+        public Task<List<ToDo>> GetByQuery(bool? Ispinned = null, string title = "", string labelName = "")
+        {
+            var toDo =  _context.ToDo.Include(x => x.CheckLists).Include(x => x.Labels).Where(
+               m => ((title == "") || (m.Title == title)) && ((!Ispinned.HasValue) || (m.IsPinned == Ispinned)) && ((labelName == "") || (m.Labels).Any(b => b.LabelName == labelName))).ToList();
+            return Task.FromResult(toDo);
 
+        }
         public Task<ToDo> Add(ToDo note)
         {
-            var newid = Notes.OrderBy(_ => _.Id).Last().Id + 1;
-            note.Id = newid;
-
-            Notes.Add(note);
-
+            _context.ToDo.Add(note);
+            _context.SaveChanges();
             return Task.FromResult(note);
         }
-
         public Task Update(int id, ToDo note)
         {
-            var existing = Notes.First(_ => _.Id == id);
-            existing.Text = note.Text;
-            existing.Title = note.Title;
-            existing.IsPinned = note.IsPinned;
-            existing.Labels = note.Labels;
-            existing.CheckLists = note.CheckLists;
+            _context.ToDo.Update(note);
+            _context.SaveChanges();
             return Task.CompletedTask;
         }
-
         public Task Delete(int id)
         {
-            var existing = Notes.First(_ => _.Id == id);
-            Notes.Remove(existing);
+            var existing = _context.ToDo.Include(x => x.CheckLists).Include(x => x.Labels).First(_ => _.Id == id);
+            _context.ToDo.Remove(existing);
+            _context.SaveChanges();
             return Task.CompletedTask;
+        }
+        public Task DeleteAll()
+        {
+           
+            var notes = _context.ToDo.Include(x => x.CheckLists).Include(x => x.Labels);
+            _context.ToDo.RemoveRange(notes);
+            _context.SaveChanges();
+            return Task.CompletedTask;
+        }
+        private bool ToDoExists(int id)
+        {
+            return _context.ToDo.Any(e => e.Id == id);
         }
 
     }

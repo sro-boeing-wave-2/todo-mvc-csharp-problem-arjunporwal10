@@ -15,14 +15,11 @@ namespace ToDoNotes.Controllers
     [ApiController]
     public class PrototypeController : ControllerBase
     {
-        private readonly PrototypeContext _context;
         private INoteService _noteService;
-
         public PrototypeController(INoteService noteService)
         {
             _noteService = noteService;
         }
-
         // GET: api/Prototype
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -30,7 +27,6 @@ namespace ToDoNotes.Controllers
             var notes = await _noteService.GetAll();
             return Ok(notes);
         }
-
         // GET: api/Prototype/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetToDo(int id)
@@ -39,7 +35,22 @@ namespace ToDoNotes.Controllers
 
             return Ok(notes);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetByQuery([FromQuery] bool? Ispinned = null, [FromQuery]string title = "", [FromQuery] string labelName = "")
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            var notes = await _noteService.GetByQuery(Ispinned,title,labelName);
+            if (notes == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(notes);
+        }
         // PUT: api/Prototype/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutToDo( int id, [FromBody] ToDo toDo)
@@ -49,9 +60,13 @@ namespace ToDoNotes.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _noteService.Update(id, toDo);
+            if (id != toDo.Id)
+            {
+                return BadRequest();
+            }
 
-            return NoContent();
+            await _noteService.Update(id, toDo);
+            return CreatedAtAction("GetToDo", new { id = toDo.Id }, toDo);
         }
 
         // POST: api/Prototype
@@ -64,7 +79,6 @@ namespace ToDoNotes.Controllers
             }
 
             var note = await _noteService.Add(toDo);
-
             return CreatedAtAction("Get", new { id = note.Id }, note);
         }
 
@@ -73,14 +87,19 @@ namespace ToDoNotes.Controllers
         public async Task<IActionResult> DeleteToDo([FromRoute] int id)
         {
             await _noteService.Delete(id);
-            return NoContent();
+            return Ok();
         }
-
-        private bool ToDoExists(int id)
+        [HttpDelete]
+        [Route("all")]
+        public async Task<IActionResult> DeleteAll()
         {
-            return _context.ToDo.Any(e => e.Id == id);
+            await _noteService.DeleteAll();
+
+            return Ok();
         }
 
-        
+
+
+
     }
 }

@@ -35,7 +35,7 @@ namespace Notes.Controllers
 
         // GET: api/ToDoes/5
         [HttpGet]
-        public async Task<IActionResult> GetToDo([FromQuery] bool? Ispinned = null, [FromQuery]string title = "", string labelName = "")
+        public async Task<IActionResult> GetToDo([FromQuery] bool? Ispinned = null, [FromQuery]string title = "", [FromQuery] string labelName = "")
         {
             if (!ModelState.IsValid)
             {
