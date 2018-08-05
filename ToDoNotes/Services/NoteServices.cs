@@ -24,8 +24,6 @@ namespace ToDoNotes.Services
     public class NoteService : INoteService
     {
         private readonly PrototypeContext _context;
-        //private List<ToDo> Notes { get; set; }
-
         public NoteService(PrototypeContext context)
         {
             _context = context;
@@ -45,7 +43,6 @@ namespace ToDoNotes.Services
             var toDo =  _context.ToDo.Include(x => x.CheckLists).Include(x => x.Labels).Where(
                m => ((title == "") || (m.Title == title)) && ((!Ispinned.HasValue) || (m.IsPinned == Ispinned)) && ((labelName == "") || (m.Labels).Any(b => b.LabelName == labelName))).ToList();
             return Task.FromResult(toDo);
-
         }
         public Task<ToDo> Add(ToDo note)
         {
@@ -68,7 +65,6 @@ namespace ToDoNotes.Services
         }
         public Task DeleteAll()
         {
-           
             var notes = _context.ToDo.Include(x => x.CheckLists).Include(x => x.Labels);
             _context.ToDo.RemoveRange(notes);
             _context.SaveChanges();

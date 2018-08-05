@@ -31,18 +31,25 @@ namespace ToDoNotes.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetToDo(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var notes = await _noteService.Get(id);
-
+            if (notes==null)
+            {
+                return NotFound();
+            }
             return Ok(notes);
         }
         [HttpGet]
+        [Route("query")]
         public async Task<IActionResult> GetByQuery([FromQuery] bool? Ispinned = null, [FromQuery]string title = "", [FromQuery] string labelName = "")
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
             var notes = await _noteService.GetByQuery(Ispinned,title,labelName);
             if (notes == null)
             {
@@ -59,16 +66,14 @@ namespace ToDoNotes.Controllers
             {
                 return BadRequest(ModelState);
             }
-
             if (id != toDo.Id)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             await _noteService.Update(id, toDo);
             return CreatedAtAction("GetToDo", new { id = toDo.Id }, toDo);
         }
-
         // POST: api/Prototype
         [HttpPost]
         public async Task<IActionResult> PostToDo([FromBody] ToDo toDo)
@@ -81,7 +86,6 @@ namespace ToDoNotes.Controllers
             var note = await _noteService.Add(toDo);
             return CreatedAtAction("Get", new { id = note.Id }, note);
         }
-
         // DELETE: api/Prototype/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteToDo([FromRoute] int id)
@@ -97,9 +101,5 @@ namespace ToDoNotes.Controllers
 
             return Ok();
         }
-
-
-
-
     }
 }

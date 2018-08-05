@@ -38,6 +38,7 @@ namespace ToDoNotes
             // Added Services for ToDoNotesContext database
             services.AddDbContext<ToDoNotesContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ToDoNotesContext")));
+
             // Added services for interface class and its child class which implements its methods
             services.AddScoped<INoteService, NoteService>();
 
