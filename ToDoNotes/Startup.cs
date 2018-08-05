@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using ToDoNotes.Models;
 using Swashbuckle.AspNetCore.Swagger;
+using ToDoNotes.Services;
 
 namespace ToDoNotes
 {
@@ -39,6 +40,9 @@ namespace ToDoNotes
                     options.UseSqlServer(Configuration.GetConnectionString("ToDoNotesContext")));
             // Added services for interface class and its child class which implements its methods
             services.AddScoped<INoteService, NoteService>();
+
+            services.AddDbContext<PrototypeContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("PrototypeContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

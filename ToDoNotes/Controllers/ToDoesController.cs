@@ -21,6 +21,11 @@ namespace Notes.Controllers
             _context = context;
         }
 
+        public Task Get()
+        {
+            throw new NotImplementedException();
+        }
+
         //GET: api/ToDoes
         //[HttpGet]
         //public IEnumerable<ToDo> GetToDo()

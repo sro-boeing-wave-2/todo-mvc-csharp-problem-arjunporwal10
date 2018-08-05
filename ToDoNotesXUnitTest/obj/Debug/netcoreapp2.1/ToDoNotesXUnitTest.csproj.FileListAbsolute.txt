@@ -12,3 +12,6 @@ D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToD
 D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\obj\Debug\netcoreapp2.1\ToDoNotesXUnitTest.AssemblyInfo.cs
 D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\obj\Debug\netcoreapp2.1\ToDoNotesXUnitTest.dll
 D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\obj\Debug\netcoreapp2.1\ToDoNotesXUnitTest.pdb
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\bin\Debug\netcoreapp2.1\ToDoNotes.dll
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\bin\Debug\netcoreapp2.1\ToDoNotes.pdb
+D:\workspace\htmlplaygrnd\C#Assignment\todo-mvc-csharp-problem-arjunporwal10\ToDoNotesXUnitTest\obj\Debug\netcoreapp2.1\ToDoNotesXUnitTest.csproj.CopyComplete

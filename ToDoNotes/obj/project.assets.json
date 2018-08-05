@@ -2,6 +2,19 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.1": {
+      "GenFu/1.4.22": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "System.Reflection.TypeExtensions": "4.1.0"
+        },
+        "compile": {
+          "lib/netstandard1.3/GenFu.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/GenFu.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
         "type": "package",
         "dependencies": {
@@ -4681,6 +4694,19 @@
     }
   },
   "libraries": {
+    "GenFu/1.4.22": {
+      "sha512": "ddTTfclr+cx2hgjD5c36i73UkrEVVJd4J43Y9kzeqLFbJk0fmggwQb2nZaBHgZRES6IWGiQbkmMz2GvZln1RZA==",
+      "type": "package",
+      "path": "genfu/1.4.22",
+      "files": [
+        "genfu.1.4.22.nupkg.sha512",
+        "genfu.nuspec",
+        "lib/net45/GenFu.dll",
+        "lib/net46/GenFu.dll",
+        "lib/net461/GenFu.dll",
+        "lib/netstandard1.3/GenFu.dll"
+      ]
+    },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
       "sha512": "rMDlyePoxggkmN/qgha1+BR2Uy+dOr38xKCQOPfVNKGY07R2nYJGMTKJFE1XFgwD70RYUNazf2fqutjJF18XgQ==",
       "type": "package",
@@ -12324,6 +12350,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
+      "GenFu >= 1.4.22",
       "Microsoft.AspNetCore.App >= 2.1.1",
       "Microsoft.NETCore.App >= 2.1.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.1.1",
@@ -12371,6 +12398,10 @@
     "frameworks": {
       "netcoreapp2.1": {
         "dependencies": {
+          "GenFu": {
+            "target": "Package",
+            "version": "[1.4.22, )"
+          },
           "Microsoft.AspNetCore.App": {
             "suppressParent": "All",
             "target": "Package",

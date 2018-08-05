@@ -1,4 +1,5 @@
-﻿using Notes.Models;
+﻿using GenFu;
+using Notes.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,11 @@ namespace ToDoNotes.Services
     //Interface created for Notes
     public interface INoteService
     {
-        IEnumerable<ToDo> GetAll();
-        ToDo Get(int id);
-        ToDo Add(ToDo note);
-        void Update(int id, ToDo note);
-        void Delete(int id);
+        Task<IEnumerable<ToDo>> GetAll();
+        Task<ToDo> Get(int id);
+        Task<ToDo> Add(ToDo note);
+        Task Update(int id, ToDo note);
+        Task Delete(int id);
     }
     // This class is implementing the methods of interface INoteService
     // Need to upgrade these methods 
@@ -24,36 +25,39 @@ namespace ToDoNotes.Services
 
         public NoteService()
         {
-            //var i = 0;
-            //Notes = A.ListOf<ToDo>(50);
-            //Notes.ForEach(note =>
-            //{
-            //    i++;
-            //    note.Id = i;
-            //});
+            var i = 0;
+            // Using GenFu to populate 
+          Notes = A.ListOf<ToDo>(50);
+            Notes.ForEach(note =>
+            {
+                i++;
+                note.Id = i;
+            });
         }
 
-        public IEnumerable<ToDo> GetAll()
+        public Task<IEnumerable<ToDo>> GetAll()
         {
-            return Notes;
+            var result = Notes.Select(x => x);
+            return Task.FromResult(result);
         }
 
-        public ToDo Get(int id)
+        public Task<ToDo> Get(int id)
         {
-            return Notes.First(_ => _.Id == id);
+            var result = Notes.First(_ => _.Id == id);
+            return Task.FromResult(result);
         }
 
-        public ToDo Add(ToDo note)
+        public Task<ToDo> Add(ToDo note)
         {
             var newid = Notes.OrderBy(_ => _.Id).Last().Id + 1;
             note.Id = newid;
 
             Notes.Add(note);
 
-            return note;
+            return Task.FromResult(note);
         }
 
-        public void Update(int id, ToDo note)
+        public Task Update(int id, ToDo note)
         {
             var existing = Notes.First(_ => _.Id == id);
             existing.Text = note.Text;
@@ -61,13 +65,15 @@ namespace ToDoNotes.Services
             existing.IsPinned = note.IsPinned;
             existing.Labels = note.Labels;
             existing.CheckLists = note.CheckLists;
-
+            return Task.CompletedTask;
         }
 
-        public void Delete(int id)
+        public Task Delete(int id)
         {
             var existing = Notes.First(_ => _.Id == id);
             Notes.Remove(existing);
+
+            return Task.CompletedTask;
         }
 
     }
