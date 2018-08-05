@@ -103,7 +103,7 @@ namespace ToDoNotesXUnitTest
         public async Task Notes_Put_Specific()
         {
             // Arrange
-            var personToChange = new ToDo
+            var noteToChange = new ToDo
             {
                 Id = 16,
                 Text = "John",
@@ -111,7 +111,7 @@ namespace ToDoNotesXUnitTest
                 Title = "FooBar",
              
             };
-            var content = JsonConvert.SerializeObject(personToChange);
+            var content = JsonConvert.SerializeObject(noteToChange);
             var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
 
             // Act

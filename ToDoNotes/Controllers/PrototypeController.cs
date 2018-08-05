@@ -49,30 +49,7 @@ namespace ToDoNotes.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != toDo.Id)
-            {
-                return BadRequest();
-            }
             await _noteService.Update(id, toDo);
-
-          
-            _context.Entry(toDo).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ToDoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
             return NoContent();
         }
@@ -88,7 +65,7 @@ namespace ToDoNotes.Controllers
 
             var note = await _noteService.Add(toDo);
 
-            return CreatedAtAction("Get", new { id = toDo.Id }, note);
+            return CreatedAtAction("Get", new { id = note.Id }, note);
         }
 
         // DELETE: api/Prototype/5
