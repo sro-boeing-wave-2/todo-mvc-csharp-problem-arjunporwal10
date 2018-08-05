@@ -35,26 +35,26 @@ namespace ToDoNotesXUnitTest
         public async Task Notes_Get_All()
         {
             // Act
-            var response = await _client.GetAsync("/api/Prototype");
+            var response = await _client.GetAsync("/api/prototype");
 
             // Assert
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
-            var notes = JsonConvert.DeserializeObject<IEnumerable<ToDo>>(responseString);
-            notes.Count().Should().Be(50);
+            var notes = JsonConvert.DeserializeObject<List<ToDo>>(responseString);
+            notes.Count().Should().Be(5);
         }
 
         [Fact]
         public async Task Notes_Get_Specific()
         {
             // Act
-            var response = await _client.GetAsync("/api/Prototype/16");
+            var response = await _client.GetAsync("/api/prototype/1");
 
             // Assert
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
             var notes = JsonConvert.DeserializeObject<ToDo>(responseString);
-            notes.Id.Should().Be(16);
+            notes.Id.Should().Be(1);
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace ToDoNotesXUnitTest
             var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await _client.PostAsync("/api/Prototype", stringContent);
+            var response = await _client.PostAsync("/api/prototype", stringContent);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -89,7 +89,7 @@ namespace ToDoNotesXUnitTest
             var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await _client.PostAsync("/api/Prototype", stringContent);
+            var response = await _client.PostAsync("/api/prototype", stringContent);
 
             // Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
@@ -107,15 +107,15 @@ namespace ToDoNotesXUnitTest
             {
                 Id = 16,
                 Text = "John",
-                IsPinned = true,   
+                IsPinned = true,
                 Title = "FooBar",
-             
+
             };
             var content = JsonConvert.SerializeObject(noteToChange);
             var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await _client.PutAsync("/api/Prototype/16", stringContent);
+            var response = await _client.PutAsync("/api/prototype/16", stringContent);
 
             // Assert
             response.EnsureSuccessStatusCode();

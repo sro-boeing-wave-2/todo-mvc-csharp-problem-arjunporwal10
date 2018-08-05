@@ -51,7 +51,7 @@ namespace ToDoNotes.Controllers
                 return BadRequest(ModelState);
             }
             var notes = await _noteService.GetByQuery(Ispinned,title,labelName);
-            if (notes == null)
+            if (notes.Count() == 0)
             {
                 return NotFound();
             }
