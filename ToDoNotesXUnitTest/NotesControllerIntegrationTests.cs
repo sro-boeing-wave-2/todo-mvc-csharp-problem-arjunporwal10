@@ -35,7 +35,7 @@ namespace ToDoNotesXUnitTest
         public async Task Notes_Get_All()
         {
             // Act
-            var response = await _client.GetAsync("/api/Notes");
+            var response = await _client.GetAsync("/api/Prototype");
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -48,7 +48,7 @@ namespace ToDoNotesXUnitTest
         public async Task Notes_Get_Specific()
         {
             // Act
-            var response = await _client.GetAsync("/api/Notes/16");
+            var response = await _client.GetAsync("/api/Prototype/16");
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -71,7 +71,7 @@ namespace ToDoNotesXUnitTest
             var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await _client.PostAsync("/api/Notes", stringContent);
+            var response = await _client.PostAsync("/api/Prototype", stringContent);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -89,7 +89,7 @@ namespace ToDoNotesXUnitTest
             var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await _client.PostAsync("/api/Notes", stringContent);
+            var response = await _client.PostAsync("/api/Prototype", stringContent);
 
             // Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
@@ -115,7 +115,7 @@ namespace ToDoNotesXUnitTest
             var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await _client.PutAsync("/api/Notes/16", stringContent);
+            var response = await _client.PutAsync("/api/Prototype/16", stringContent);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -133,7 +133,7 @@ namespace ToDoNotesXUnitTest
             var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await _client.PutAsync("/api/Notes/16", stringContent);
+            var response = await _client.PutAsync("/api/Prototype/16", stringContent);
 
             // Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
@@ -149,7 +149,7 @@ namespace ToDoNotesXUnitTest
             // Arrange
 
             // Act
-            var response = await _client.DeleteAsync("/api/Notes/16");
+            var response = await _client.DeleteAsync("/api/Prototype/16");
 
             // Assert
             response.EnsureSuccessStatusCode();
