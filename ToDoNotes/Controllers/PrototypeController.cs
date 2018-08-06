@@ -16,9 +16,10 @@ namespace ToDoNotes.Controllers
     public class PrototypeController : ControllerBase
     {
         private INoteService _noteService;
-        public PrototypeController(INoteService noteService)
+        public PrototypeController(PrototypeContext _context)
         {
-            _noteService = noteService;
+            _noteService = new NoteService(_context);
+            //_noteService = noteService;
         }
         // GET: api/Prototype
         [HttpGet]
@@ -72,7 +73,7 @@ namespace ToDoNotes.Controllers
             }
 
             await _noteService.Update(id, toDo);
-            return CreatedAtAction("GetToDo", new { id = toDo.Id }, toDo);
+            return Ok(toDo);
         }
         // POST: api/Prototype
         [HttpPost]
@@ -84,14 +85,16 @@ namespace ToDoNotes.Controllers
             }
 
             var note = await _noteService.Add(toDo);
-            return CreatedAtAction("Get", new { id = note.Id }, note);
+           // return StatusCode(201);
+            // return Ok(toDo);
+           return CreatedAtAction("Get", new { id = note.Id }, note);
         }
         // DELETE: api/Prototype/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteToDo([FromRoute] int id)
         {
             await _noteService.Delete(id);
-            return Ok();
+            return Ok(id);
         }
         [HttpDelete]
         [Route("all")]

@@ -61,7 +61,7 @@ namespace ToDoNotes.Migrations.Prototype
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("IsPinned");
+                    b.Property<bool?>("IsPinned");
 
                     b.Property<string>("Text");
 

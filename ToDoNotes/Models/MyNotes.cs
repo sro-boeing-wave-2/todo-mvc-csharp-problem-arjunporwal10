@@ -10,7 +10,7 @@ namespace Notes.Models
         public int Id { get; set; }
         public string Text { get; set; }
         public string Title { get; set; }
-        public bool IsPinned { get; set; }
+        public bool? IsPinned { get; set; }
         public List<Label> Labels { get; set; }
         public List<Checklist> CheckLists { get; set; }
 

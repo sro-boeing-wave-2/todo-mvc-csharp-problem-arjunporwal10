@@ -12,18 +12,19 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using ToDoNotes.Models;
-using Swashbuckle.AspNetCore.Swagger;
 using ToDoNotes.Services;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace ToDoNotes
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment currentEnvironment)
         {
             Configuration = configuration;
+            _currentEnvironment = currentEnvironment;
         }
-
+        public IHostingEnvironment _currentEnvironment{ get; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -41,9 +42,16 @@ namespace ToDoNotes
 
             // Added services for interface class and its child class which implements its methods
             services.AddScoped<INoteService, NoteService>();
-
-            services.AddDbContext<PrototypeContext>(options =>
+            if (_currentEnvironment.IsDevelopment())
+            {
+                services.AddDbContext<PrototypeContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("PrototypeContext")));
+            }else
+            {
+                services.AddDbContext<PrototypeContext>(options =>
+                options.UseInMemoryDatabase("InMemoryDataBaseString"));
+            }
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
