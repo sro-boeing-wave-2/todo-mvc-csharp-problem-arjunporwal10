@@ -102,7 +102,7 @@ namespace ToDoNotes.Controllers
         {
             await _noteService.DeleteAll();
 
-            return Ok();
+            return NoContent();
         }
     }
 }

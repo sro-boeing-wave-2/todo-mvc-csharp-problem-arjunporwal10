@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using ToDoNotes.Models;
 using ToDoNotes.Services;
 using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace ToDoNotes
 {
@@ -42,6 +43,8 @@ namespace ToDoNotes
 
             // Added services for interface class and its child class which implements its methods
             services.AddScoped<INoteService, NoteService>();
+            
+
             if (_currentEnvironment.IsDevelopment())
             {
                 services.AddDbContext<PrototypeContext>(options =>
@@ -77,5 +80,6 @@ namespace ToDoNotes
             app.UseHttpsRedirection();
             app.UseMvc();
         }
+        
     }
 }
