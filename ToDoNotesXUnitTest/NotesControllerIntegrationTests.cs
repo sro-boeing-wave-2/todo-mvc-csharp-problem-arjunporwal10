@@ -83,7 +83,7 @@ namespace ToDoNotesXUnitTest
 
 
         }
-        
+
 
         //public NotesControllerIntegrationTests()
         //{
@@ -106,7 +106,7 @@ namespace ToDoNotesXUnitTest
         //    // Assert
         //    //response.EnsureSuccessStatusCode();
         //    var responseString = await response.Content.ReadAsStringAsync();
-        //   // Console.WriteLine(responseString);
+        //    // Console.WriteLine(responseString);
         //    var notes = JsonConvert.DeserializeObject<List<ToDo>>(responseString);
         //    notes.Count().Should().Be(2);
         //}
@@ -114,8 +114,8 @@ namespace ToDoNotesXUnitTest
         //[Fact]
         //public async Task Notes_Get_Specific()
         //{
-            
-            
+
+
         //       var response = await _client.GetAsync("/api/prototype/1");
 
         //    // Assert
@@ -126,28 +126,28 @@ namespace ToDoNotesXUnitTest
         //    notes.Id.Should().Be(1);
         //}
 
-        //[Fact]
-        //public async Task Notes_Post_Specific()
-        //{
-        //    // Arrange
-        //    var NoteToAdd = new ToDo
-        //    {
-        //        Text = "John",
-        //        IsPinned = true,
-        //        Title = "FooBar"
-        //    };
-        //    var content = JsonConvert.SerializeObject(NoteToAdd);
-        //    var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
+        [Fact]
+        public async Task Notes_Post_Specific()
+        {
+            // Arrange
+            var NoteToAdd = new ToDo
+            {
+                Text = "John",
+                IsPinned = true,
+                Title = "FooBar"
+            };
+            var content = JsonConvert.SerializeObject(NoteToAdd);
+            var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
 
-        //    // Act
-        //    var response = await _client.PostAsync("/api/prototype", stringContent);
+            // Act
+            var response = await _client.PostAsync("/api/prototype", stringContent);
 
-        //    // Assert
-        //    response.EnsureSuccessStatusCode();
-        //    var responseString = await response.Content.ReadAsStringAsync();
-        //    var note = JsonConvert.DeserializeObject<ToDo>(responseString);
-        //    note.Id.Should().Be(1006);
-        //}
+            // Assert
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
+            var note = JsonConvert.DeserializeObject<ToDo>(responseString);
+            note.Id.Should().Be(1);
+        }
 
         //[Fact]
         //public async Task Notes_Post_Specific_Invalid()
