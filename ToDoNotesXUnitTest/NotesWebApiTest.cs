@@ -17,84 +17,88 @@ namespace ToDoNotesXUnitTest
 {
     public class NotesWebAPITests
     {
-        //private readonly PrototypeContext _context;
-        private readonly PrototypeController _controller;
-        public NotesWebAPITests()
+        public PrototypeController GetController()
         {
-            var dbOptionBuilder = new DbContextOptionsBuilder<PrototypeContext>();
-            dbOptionBuilder.UseInMemoryDatabase("InMemoryDataBaseString");
-            PrototypeContext prototypeContext = new PrototypeContext(dbOptionBuilder.Options);
-            _controller = new PrototypeController(prototypeContext);
-            CreateData(prototypeContext);
+            Console.WriteLine("Get Controller");
+            var optionsBuilder = new DbContextOptionsBuilder<PrototypeContext>();
+            optionsBuilder.UseInMemoryDatabase<PrototypeContext>(Guid.NewGuid().ToString());
+            PrototypeContext prototypeContext = new PrototypeContext(optionsBuilder.Options);
+            CreateData(optionsBuilder.Options);
+            return new PrototypeController(prototypeContext);
         }
-        public async void CreateData(PrototypeContext prototypeContext)
+
+        public void CreateData(DbContextOptions<PrototypeContext> options)
         {
-            var NotesToAdd = new List<ToDo>
-            {new ToDo()
+            using (var prototypeContext = new PrototypeContext(options))
             {
-                Text = "John",
-                IsPinned = true,
-                Title = "FooBar",
-                Labels = new List<Label>
-                {
-                    new Label{LabelName="red label"},
-                    new Label{LabelName="black label"}
-                },
-                CheckLists=new List<Checklist>
-                {
-                    new Checklist{ChecklistData="soda",IsChecked=true},
-                    new Checklist {ChecklistData="water",IsChecked=false}
-
-                }
-            },
-            new ToDo()
+                var NotesToAdd = new List<ToDo>
             {
-                Text = "Ronnie",
-                IsPinned = false,
-                Title = "SooBar",
-                Labels = new List<Label>
+                new ToDo()
                 {
-                    new Label{LabelName="blue label"},
-                    new Label{LabelName="juice"}
-                },
-                CheckLists=new List<Checklist>
-                {
-                    new Checklist{ChecklistData="soda",IsChecked=false},
-                    new Checklist {ChecklistData="water",IsChecked=false}
+                    Id = 1,
+                    Text = "John",
+                    IsPinned = true,
+                    Title = "FooBar",
+                    Labels = new List<Label>
+                    {
+                        new Label{LabelName="red label"},
+                        new Label{LabelName="black label"}
+                    },
+                    CheckLists=new List<Checklist>
+                    {
+                        new Checklist{ChecklistData="soda",IsChecked=true},
+                        new Checklist {ChecklistData="water",IsChecked=false}
 
+                    }
+                },
+                new ToDo()
+                {
+                    Id = 2,
+                    Text = "Ronnie",
+                    IsPinned = false,
+                    Title = "SooBar",
+                    Labels = new List<Label>
+                    {
+                        new Label{LabelName="blue label"},
+                        new Label{LabelName="juice"}
+                    },
+                    CheckLists=new List<Checklist>
+                    {
+                        new Checklist{ChecklistData="soda",IsChecked=false},
+                        new Checklist {ChecklistData="water",IsChecked=false}
+
+                    }
                 }
-            }
             };
-            prototypeContext.ToDo.AddRange(NotesToAdd);
-            await prototypeContext.SaveChangesAsync();
-
-
+                prototypeContext.ToDo.AddRange(NotesToAdd);
+                var CountOfEntitiesBeingTracked = prototypeContext.ChangeTracker.Entries().Count();
+                prototypeContext.SaveChanges();
+            }
         }
-        //[Fact]
-        //public void TestGetByPinnedAndLabel()
-        //{
-        //    //string label = "";
-        //    //bool Ispinned = true;
-        //    //string title = "";
-        //    var result = _controller.GetByQuery(true);
-        //    var objectresult = result.Result as OkObjectResult;
-        //    var notes = objectresult.Value as List<ToDo>;
-        //   // Console.WriteLine(notes.Count());
-        //     Assert.Equal(1, notes.Count());
-        //}
-        [Fact]
-        public async void TestGetById()
-        {
-            var result = await _controller.GetToDo(2);
 
-           // Console.Write(result.Result);
+        [Fact]
+        public void TestGetByPinnedAndLabel()
+        {
+            var _controller = GetController();
+            var result = _controller.GetByQuery(true,"","");
+            var objectresult = result.Result as OkObjectResult;
+            var notes = objectresult.Value as List<ToDo>;
+            Assert.Equal(1, notes.Count());
+        }
+        [Fact]
+        public async Task TestGetById()
+        {
+            var _controller = GetController();
+            var result = await _controller.GetToDo(1);
             var objectresult = result as OkObjectResult;
             var notes = objectresult.Value as ToDo;
-            Assert.Equal("SooBar", notes.Title);
+            Assert.Equal(1, notes.Id);
         }
+
         [Fact]
-        public async void TestGetAll()
+        public async Task TestGetAll()
         {
+            var _controller = GetController();
             var result = await _controller.Get();
             var objectresult = result as OkObjectResult;
             var notes = objectresult.Value as List<ToDo>;
@@ -102,221 +106,80 @@ namespace ToDoNotesXUnitTest
         }
 
         [Fact]
-        public void TestPostMethod()
+        public async Task TestPutMethod()
         {
-            var noteToAdd = new ToDo()
+            var TestNotePut = new ToDo()
             {
-                Text = "Sam",
+                Id = 1,
+                Text = "Johnny",
                 IsPinned = true,
-                Title = "MyBaar",
+                Title = "FooBar",
                 Labels = new List<Label>
-                {
-                    new Label{LabelName="label1"},
-                    new Label{LabelName="label2"}
-                },
+                    {
+                        new Label{LabelName="red label"},
+                        new Label{LabelName="black label"}
+                    },
                 CheckLists = new List<Checklist>
-                {
-                    new Checklist{ChecklistData="juice",IsChecked=false},
-                    new Checklist {ChecklistData="water",IsChecked=false}
+                    {
+                        new Checklist{ChecklistData="soda",IsChecked=true},
+                        new Checklist {ChecklistData="water",IsChecked=false}
 
-                }
+                    }
             };
-            var result = _controller.PostToDo(noteToAdd);
-            var objectresult = result.IsCompleted;
-            //var notes = objectresult.Value as CreatedAtActionResult;
-            ////Console.WriteLine(notes.Count());
-            Assert.True(objectresult);
-        }
-        [Fact]
-        public async void TestPutMethod()
-        {
-            var noteToAdd = new ToDo()
-            {
-                Id=2,
-                Text = "Sonnie",
-                IsPinned = false,
-                Title = "SooBar",
-                Labels = new List<Label>
-                {
-                    new Label{LabelName="blue label"},
-                    new Label{LabelName="juice"}
-                },
-                CheckLists = new List<Checklist>
-                {
-                    new Checklist{ChecklistData="soda",IsChecked=false},
-                    new Checklist {ChecklistData="water",IsChecked=false}
-
-                }
-            };
-            var result = await _controller.PutToDo(2,noteToAdd);
+            var _controller = GetController();
+            var result = await _controller.PutToDo(1, TestNotePut);
             var objectresult = result as OkObjectResult;
             var notes = objectresult.Value as ToDo;
-            Assert.Equal("Sonnie", notes.Text);
+            Assert.Equal(1, notes.Id);
         }
-        //[Fact]
-        //public void TestDeleteMethod()
-        //{
-        //    var result = _controller.DeleteToDo(1);
-        //    var objectresult = result;
-        //    //Console.WriteLine(objectresult);
-        //    //var notes = objectresult.Value as int;
-        //    //Assert.Equal("RanToCompletion", objectresult);
-        //}
-        //[Fact]
-        //public void TestDeleteAllMethod()
-        //{
-        //    var result = _controller.DeleteAll();
-        //    var objectresult = result;
-        //    //Console.WriteLine(objectresult);
-        //    //var notes = objectresult.Value as int;
-        //    //Assert.Equal("RanToCompletion", objectresult);
-        //}
-        //[Fact]
-        //public async Task Notes_Get_All()
-        //{
-        //    List<ToDo> note = new List<ToDo>();
-        //    var _context = new Mock<PrototypeContext>();
-        //    // _context.Setup(x => x.ToDo.Find(It.IsAny<int>())).Returns(note);
-        //    _context.Setup(x => x.ToDo).As(note);
-        //    // Arrange
-        //    var controller = new PrototypeController(_context.Object);
+        [Fact]
+        public void TestPostMethod()
+        {
+            var TestNotePost = new ToDo()
+            {
+                
+                Text = "Rohnny",
+                IsPinned = true,
+                Title = "FooBar",
+                Labels = new List<Label>
+                    {
+                        new Label{LabelName="red label"},
+                        new Label{LabelName="black label"}
+                    },
+                CheckLists = new List<Checklist>
+                    {
+                        new Checklist{ChecklistData="soda",IsChecked=true},
+                        new Checklist {ChecklistData="water",IsChecked=false}
 
+                    }
+            };
+            var _controller = GetController();
+            var result = _controller.PostToDo(TestNotePost);
+            var objectresult = result.IsCompleted;
+            Assert.True(objectresult);
+        }
 
-
-        //    // Act
-        //    var result = await controller.Get();
-
-        //    // Assert
-        //    var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
-        //    var notes = okResult.Value.Should().BeAssignableTo<IEnumerable<ToDo>>().Subject;
-
-        //    notes.Count().Should().Be(50);
-        //}
-
-        //[Fact]
-        //public async Task Notes_Get_From_Moq()
-        //{
-        //    // Arrange
-        //    var serviceMock = new Mock<INoteService>();
-        //    IEnumerable<ToDo> notes = new List<ToDo>
-        //    {
-        //        new ToDo{Id=1, Title="Foo", Text="Bar"},
-        //        new ToDo{Id=2, Title="John", Text="Doe"},
-        //        new ToDo{Id=3, Title="Juergen", Text="Gutsch"},
-        //    };
-        //    serviceMock.Setup(x => x.GetAll()).Returns(() => Task.FromResult(notes));
-        //    var controller = new PrototypeController(serviceMock.Object);
-
-        //    // Act
-        //    var result = await controller.Get();
-
-        //    // Assert
-        //    var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
-        //    var actual = okResult.Value.Should().BeAssignableTo<IEnumerable<ToDo>>().Subject;
-
-        //    notes.Count().Should().Be(3);
-        //}
-
-        //[Fact]
-        //public async Task Notes_Get_Specific()
-        //{
-        //    // Arrange
-        //    var controller = new PrototypeController(new NoteService());
-
-        //    // Act
-        //    var result = await controller.GetToDo(16);
-
-        //    // Assert
-        //    var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
-        //    var note = okResult.Value.Should().BeAssignableTo<ToDo>().Subject;
-        //    note.Id.Should().Be(16);
-        //}
-
-        //[Fact]
-        //public async Task Notes_Add()
-        //{
-        //    // Arrange
-        //    var controller = new PrototypeController(new NoteService());
-        //    var newNote = new ToDo
-        //    {
-        //        Text = "John",
-        //        Title = "FooBar",
-        //        IsPinned = true
-
-        //    };
-
-        //    // Act
-        //    var result = await controller.PostToDo(newNote);
-
-        //    // Assert
-        //    var okResult = result.Should().BeOfType<CreatedAtActionResult>().Subject;
-        //    var note = okResult.Value.Should().BeAssignableTo<ToDo>().Subject;
-        //    note.Id.Should().Be(51);
-        //}
-
-        //[Fact]
-        //public async Task Notes_Change()
-        //{
-        //    // Arrange
-        //    var service = new NoteService();
-        //    var controller = new PrototypeController(service);
-        //    var newNote = new ToDo
-        //    {
-        //        Text = "John",
-        //        Title = "FooBar",
-        //        IsPinned = false
-
-        //    };
-
-        //    // Act
-        //    var result = await controller.PutToDo(1, newNote);
-
-        //    // Assert
-        //    var okResult = result.Should().BeOfType<NoContentResult>().Subject;
-
-        //    var note = await service.Get(1);
-        //    note.Id.Should().Be(20);
-        //    note.Text.Should().Be("John");
-        //    note.Title.Should().Be("FooBar");
-        //    note.IsPinned.Should().Be(false);
-
-        //}
-
-        //[Fact]
-        //public async Task Notes_Delete()
-        //{
-        //    // Arrange
-        //    var service = new NoteService();
-        //    var controller = new PrototypeController(service);
-
-        //    // Act
-        //    var result = await controller.DeleteToDo(20);
-
-        //    // Assert
-        //    var okResult = result.Should().BeOfType<NoContentResult>().Subject;
-        //    // should throw an eception, 
-        //    // because the person with id==20 doesn't exist enymore
-        //    //AssertionExtensions.ShouldThrow<InvalidOperationException>(
-        //    //     () => service.Get(20));
-        //}
-
-
-        //[Fact]
-        //public async Task Persons_Delete_Fail()
-        //{
-        //    // Arrange
-        //    var service = new NoteService();
-        //    var controller = new PrototypeController(service);
-
-        //    // Act
-        //    var result = await controller.DeleteToDo(20);
-
-        //    // Assert
-        //    var okResult = result.Should().BeOfType<NoContentResult>().Subject;
-        //    // should throw an eception, 
-        //    // because the person with id==20 doesn't exist enymore
-        //    //AssertionExtensions.ShouldThrow<InvalidOperationException>(
-        //    //    () => service.Get(15));
-        //}
+        [Fact]
+        public void TestDeleteMethod()
+        {
+            var _controller = GetController();
+            var result = _controller.DeleteToDo(1);
+            int flag = 0;
+            if (result != null)
+                flag = 1;
+            Assert.Equal(1,flag);
+        }
+        [Fact]
+        public void TestDeleteAllMethod()
+        {
+            var _controller = GetController();
+            var result = _controller.DeleteAll();
+            var objectresult = result;
+            int flag = 0;
+            if (result != null)
+                flag = 1;
+            Assert.Equal(1, flag);
+        }
+       
     }
 }

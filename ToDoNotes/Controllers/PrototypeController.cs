@@ -61,7 +61,7 @@ namespace ToDoNotes.Controllers
         }
         // PUT: api/Prototype/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutToDo( int id, [FromBody] ToDo toDo)
+        public async Task<IActionResult> PutToDo(int id, [FromBody] ToDo toDo)
         {
             if (!ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace ToDoNotes.Controllers
             var note = await _noteService.Add(toDo);
            // return StatusCode(201);
             // return Ok(toDo);
-           return CreatedAtAction("Get", new { id = note.Id }, note);
+           return CreatedAtAction("GetToDo", new { id = note.Id }, note);
         }
         // DELETE: api/Prototype/5
         [HttpDelete("{id}")]
