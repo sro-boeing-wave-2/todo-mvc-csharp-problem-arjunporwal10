@@ -19,7 +19,7 @@ namespace ToDoNotesXUnitTest
     {
         public PrototypeController GetController()
         {
-            Console.WriteLine("Get Controller");
+           // Console.WriteLine("Get Controller");
             var optionsBuilder = new DbContextOptionsBuilder<PrototypeContext>();
             optionsBuilder.UseInMemoryDatabase<PrototypeContext>(Guid.NewGuid().ToString());
             PrototypeContext prototypeContext = new PrototypeContext(optionsBuilder.Options);
