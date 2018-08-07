@@ -164,21 +164,14 @@ namespace ToDoNotesXUnitTest
         {
             var _controller = GetController();
             var result = _controller.DeleteToDo(1);
-            int flag = 0;
-            if (result != null)
-                flag = 1;
-            Assert.Equal(1,flag);
+            Assert.True(result.IsCompletedSuccessfully);
         }
         [Fact]
         public void TestDeleteAllMethod()
         {
             var _controller = GetController();
             var result = _controller.DeleteAll();
-            var objectresult = result;
-            int flag = 0;
-            if (result != null)
-                flag = 1;
-            Assert.Equal(1, flag);
+            Assert.True(result.IsCompletedSuccessfully);
         }
        
     }

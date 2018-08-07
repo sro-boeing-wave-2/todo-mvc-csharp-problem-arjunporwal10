@@ -94,7 +94,7 @@ namespace ToDoNotes.Controllers
         public async Task<IActionResult> DeleteToDo([FromRoute] int id)
         {
             await _noteService.Delete(id);
-            return Ok(id);
+            return NoContent();
         }
         [HttpDelete]
         [Route("all")]
