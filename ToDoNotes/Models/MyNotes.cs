@@ -13,6 +13,16 @@ namespace Notes.Models
         public bool? IsPinned { get; set; }
         public List<Label> Labels { get; set; }
         public List<Checklist> CheckLists { get; set; }
+        public bool IsEquals(ToDo n)
+        {
+
+            if (Title == n.Title && Text == n.Text && IsPinned == n.IsPinned && Labels.All(x => n.Labels.Exists(y => y.LabelName == x.LabelName)) && CheckLists.All(x => n.CheckLists.Exists(y => (y.ChecklistData == x.ChecklistData && y.IsChecked == x.IsChecked))))
+                return true;
+
+            return false;
+
+
+        }
 
     }
     public class Label

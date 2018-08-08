@@ -120,7 +120,23 @@ namespace ToDoNotesXUnitTest
                         },
             IsPinned = false
         };
-        [Fact]
+        ToDo TestNoteNew = new ToDo()
+        {
+            Title = "Title-1-Deletable",
+            Text = "Message-1-Deletable",
+            CheckLists = new List<Checklist>()
+                        {
+                            new Checklist(){ ChecklistData = "checklist-1", IsChecked = true},
+                            new Checklist(){ ChecklistData = "checklist-2", IsChecked = false}
+                        },
+            Labels = new List<Label>()
+                        {
+                            new Label(){LabelName = "Label-1-Deletable"},
+                            new Label(){ LabelName = "Label-2-Deletable"}
+                        },
+            IsPinned = true
+        };
+    [Fact]
         public async Task Notes_Post()
         {
             var content = JsonConvert.SerializeObject(TestNotePost);
@@ -128,7 +144,7 @@ namespace ToDoNotesXUnitTest
             var response = await _client.PostAsync("/api/prototype", stringContent);
             var responseString = await response.Content.ReadAsStringAsync();
             var note = JsonConvert.DeserializeObject<ToDo>(responseString);
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.True(TestNotePost.IsEquals(note));
         }
         [Fact]
         public async Task Notes_Get_All()
@@ -144,8 +160,7 @@ namespace ToDoNotesXUnitTest
             var response = await _client.GetAsync("/api/prototype/1");
             var responseString = await response.Content.ReadAsStringAsync();
             var notes = JsonConvert.DeserializeObject<ToDo>(responseString);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal("Title-1-Deletable", notes.Title);
+            Assert.True(TestNoteNew.IsEquals(notes));
         }
         [Fact]
         public async Task Notes_Get_Query()
@@ -154,7 +169,6 @@ namespace ToDoNotesXUnitTest
             var responseString = await response.Content.ReadAsStringAsync();
             var notes = JsonConvert.DeserializeObject<List<ToDo>>(responseString);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-           // Assert.Equal("Title-1-Deletable", notes.Title);
         }
         [Fact]
         public async Task Notes_Put()
