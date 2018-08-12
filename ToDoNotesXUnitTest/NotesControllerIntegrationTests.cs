@@ -28,7 +28,7 @@ namespace ToDoNotesXUnitTest
         public NotesControllerIntegrationTests()
         {
             var _server = new TestServer(new WebHostBuilder()
-                .UseEnvironment("Testing")
+                .UseEnvironment("Production")
                 .UseStartup<Startup>());
             _client = _server.CreateClient();
             _context = _server.Host.Services.GetService(typeof(PrototypeContext)) as PrototypeContext;

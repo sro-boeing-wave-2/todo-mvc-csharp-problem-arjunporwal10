@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Moq;
-using Notes.Controllers;
 using ToDoNotes.Controllers;
 using ToDoNotes.Services;
 using Notes.Models;

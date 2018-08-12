@@ -38,27 +38,28 @@ namespace ToDoNotes
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
             // Added Services for ToDoNotesContext database
-            services.AddDbContext<ToDoNotesContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ToDoNotesContext")));
-
             // Added services for interface class and its child class which implements its methods
             services.AddScoped<INoteService, NoteService>();
             
 
-            if (_currentEnvironment.IsDevelopment())
-            {
-                services.AddDbContext<PrototypeContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("PrototypeContext")));
-            }else
+            if (_currentEnvironment.IsEnvironment("Testing"))
             {
                 services.AddDbContext<PrototypeContext>(options =>
                 options.UseInMemoryDatabase("InMemoryDataBaseString"));
+
             }
             
+                services.AddDbContext<PrototypeContext>(options =>
+                   options.UseSqlServer(Configuration.GetConnectionString("PrototypeContext"), dbOptions => dbOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd:null)));
+                //services.AddDbContext<PrototypeContext>(options =>
+                //    options.UseSqlServer(Configuration.GetConnectionString("PrototypeContext")));
+
+            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,PrototypeContext context)
         {
             if (env.IsDevelopment())
             {
@@ -79,6 +80,7 @@ namespace ToDoNotes
             });
             app.UseHttpsRedirection();
             app.UseMvc();
+            context.Database.Migrate();
         }
         
     }
