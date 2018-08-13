@@ -39,6 +39,18 @@ namespace ToDoNotes.Controllers
             return new ObjectResult(note);
         }
 
+        [HttpGet]
+        [Route("query")]
+        public IActionResult GetNotesByQuery([FromQuery] bool? Ispinned = null, [FromQuery]string title = "", [FromQuery] string labelName = "")
+        {
+            var note = objds.GetNotesByQuery(Ispinned, title, labelName);
+            if (note == null)
+            {
+                return NotFound();
+            }
+            return new ObjectResult(note);
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody]ToDo p)
         {

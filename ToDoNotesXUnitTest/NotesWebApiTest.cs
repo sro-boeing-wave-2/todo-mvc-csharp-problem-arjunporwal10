@@ -18,7 +18,7 @@
 //    {
 //        public PrototypeController GetController()
 //        {
-//           // Console.WriteLine("Get Controller");
+//            // Console.WriteLine("Get Controller");
 //            var optionsBuilder = new DbContextOptionsBuilder<PrototypeContext>();
 //            optionsBuilder.UseInMemoryDatabase<PrototypeContext>(Guid.NewGuid().ToString());
 //            PrototypeContext prototypeContext = new PrototypeContext(optionsBuilder.Options);
@@ -79,7 +79,7 @@
 //        public void TestGetByPinnedAndLabel()
 //        {
 //            var _controller = GetController();
-//            var result = _controller.GetByQuery(true,"","");
+//            var result = _controller.GetByQuery(true, "", "");
 //            var objectresult = result.Result as OkObjectResult;
 //            var notes = objectresult.Value as List<ToDo>;
 //            Assert.Equal(1, notes.Count());
@@ -136,7 +136,7 @@
 //        {
 //            var TestNotePost = new ToDo()
 //            {
-                
+
 //                Text = "Rohnny",
 //                IsPinned = true,
 //                Title = "FooBar",
@@ -172,6 +172,6 @@
 //            var result = _controller.DeleteAll();
 //            Assert.True(result.IsCompletedSuccessfully);
 //        }
-       
+
 //    }
 //}

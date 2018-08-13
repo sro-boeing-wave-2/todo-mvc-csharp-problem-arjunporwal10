@@ -27,6 +27,11 @@ namespace ToDoNotes.Models
             return _db.GetCollection<ToDo>("Notes").FindAll();
         }
 
+        public IEnumerable<ToDo> GetNotesByQuery(bool? Ispinned = null, string title = "", string labelName = "")
+        {
+            return _db.GetCollection<ToDo>("Notes").FindAll().Where(
+                m => ((title == "") || (m.Title == title)) && ((!Ispinned.HasValue) || (m.IsPinned == Ispinned)) && ((labelName == "") || (m.Labels).Any(b => b.LabelName == labelName)));
+        }
 
         public ToDo GetNote(ObjectId id)
         {
