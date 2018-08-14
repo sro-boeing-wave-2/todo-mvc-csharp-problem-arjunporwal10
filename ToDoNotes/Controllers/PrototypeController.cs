@@ -31,6 +31,10 @@ namespace ToDoNotes.Controllers
         [HttpGet("{id:length(24)}")]
         public IActionResult GetNotesById(string id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var note = objds.GetNote(new ObjectId(id));
             if (note == null)
             {
@@ -43,6 +47,10 @@ namespace ToDoNotes.Controllers
         [Route("query")]
         public IActionResult GetNotesByQuery([FromQuery] bool? Ispinned = null, [FromQuery]string title = "", [FromQuery] string labelName = "")
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var note = objds.GetNotesByQuery(Ispinned, title, labelName);
             if (note == null)
             {
@@ -54,12 +62,20 @@ namespace ToDoNotes.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]ToDo p)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             objds.Create(p);
             return new OkObjectResult(p);
         }
         [HttpPut("{id:length(24)}")]
         public IActionResult Put(string id, [FromBody]ToDo p)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var recId = new ObjectId(id);
             var note = objds.GetNote(recId);
             if (note == null)
