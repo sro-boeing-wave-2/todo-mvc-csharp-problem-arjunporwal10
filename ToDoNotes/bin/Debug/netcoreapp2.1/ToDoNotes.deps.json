@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "35c0b14ad188fdb1ea6ecfe0032aaa23a70c8138"
+    "signature": "e4dd33347ec2cd10e50f6113cfee8b50e21fe620"
   },
   "compilationOptions": {
     "defines": [
@@ -28,6 +28,7 @@
           "Microsoft.AspNetCore.App": "2.1.1",
           "Microsoft.NETCore.App": "2.1.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.1.1",
+          "MongoDB.Testing": "1.0.0-beta-002",
           "Swashbuckle.AspNetCore": "3.0.0",
           "mongocsharpdriver": "2.7.0"
         },
@@ -485,6 +486,21 @@
         },
         "compile": {
           "lib/netstandard1.5/MongoDB.Driver.Core.dll": {}
+        }
+      },
+      "MongoDB.Testing/1.0.0-beta-002": {
+        "dependencies": {
+          "MongoDB.Driver": "2.7.0",
+          "System.Reflection": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.6/MongoDB.Testing.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.6/MongoDB.Testing.dll": {}
         }
       },
       "NETStandard.Library/2.0.3": {
@@ -4096,6 +4112,13 @@
       "sha512": "sha512-SepB4KT+zXA3iFaIFwXVKmk6BZIp0EGE/iWqNbDZ1mca9e8EhtqYPwOOzFmEbdKAzmVvF1y86kNI4agWP6I5sg==",
       "path": "mongodb.driver.core/2.7.0",
       "hashPath": "mongodb.driver.core.2.7.0.nupkg.sha512"
+    },
+    "MongoDB.Testing/1.0.0-beta-002": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KYqS9pMdW0ipOQhOeEdXbQ2KObOT8fibtNT6uIrtzWlzSryoe9JSeX6ZDN3o2h5VvOX6n7OL9hG47T8o2XgNxA==",
+      "path": "mongodb.testing/1.0.0-beta-002",
+      "hashPath": "mongodb.testing.1.0.0-beta-002.nupkg.sha512"
     },
     "NETStandard.Library/2.0.3": {
       "type": "package",

@@ -39,7 +39,7 @@ namespace ToDoNotes
             });
             // Added Services for ToDoNotesContext database
             // Added services for interface class and its child class which implements its methods
-           // services.AddScoped<INoteService, NoteService>();
+            services.AddScoped<IDataAccess, DataAccess>();
 
             services.AddTransient<DataAccess>();
             services.AddMvc();
@@ -64,6 +64,7 @@ namespace ToDoNotes
         {
             if (env.IsDevelopment())
             {
+               // context.Database.Migrate();
                 app.UseDeveloperExceptionPage();
             }
             else

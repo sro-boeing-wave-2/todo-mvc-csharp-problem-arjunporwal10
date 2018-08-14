@@ -9,7 +9,16 @@ using System.Threading.Tasks;
 
 namespace ToDoNotes.Models
 {
-    public class DataAccess
+    public interface IDataAccess
+    {
+        IEnumerable<ToDo> GetNotes();
+        IEnumerable<ToDo> GetNotesByQuery(bool? Ispinned = null, string title = "", string labelName = "");
+        ToDo GetNote(ObjectId id);
+        ToDo Create(ToDo p);
+        void Update(ObjectId id, ToDo p);
+        void Remove(ObjectId id);
+    }
+    public class DataAccess:IDataAccess
     {
         MongoClient _client;
         MongoServer _server;

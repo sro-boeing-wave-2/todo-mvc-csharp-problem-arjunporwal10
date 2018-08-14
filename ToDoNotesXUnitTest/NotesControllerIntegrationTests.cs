@@ -18,6 +18,9 @@
 //using ToDoNotes.Services;
 //using Microsoft.Extensions.DependencyInjection.Extensions;
 //using System.Net;
+//using MongoDB.Testing.Mongo;
+//using ToDoNotes.MongoExeLocator;
+//using MongoDB.Bson;
 
 //namespace ToDoNotesXUnitTest
 //{
@@ -54,7 +57,7 @@
 //        }
 //        ToDo TestNoteProper = new ToDo()
 //        {
-//            Id = 1,
+
 //            Title = "Title-1-Updatable",
 //            Text = "Message-1-Updatable",
 //            CheckLists = new List<Checklist>()
@@ -71,7 +74,7 @@
 //        };
 //        ToDo TestNotePut = new ToDo()
 //        {
-//            Id = 1,
+
 //            Title = "Title-1-Deletable",
 //            Text = "Message-1-deletable",
 //            CheckLists = new List<Checklist>()
@@ -88,7 +91,7 @@
 //        };
 //        ToDo TestNotePost = new ToDo()
 //        {
-            
+
 //            Title = "Title-2-Deletable",
 //            Text = "Message-1-deletable",
 //            CheckLists = new List<Checklist>()
@@ -105,7 +108,7 @@
 //        };
 //        ToDo TestNoteDelete = new ToDo()
 //        {
-            
+
 //            Title = "this is deleted title",
 //            Text = "Message-1-deletable",
 //            CheckLists = new List<Checklist>()
@@ -136,64 +139,90 @@
 //                        },
 //            IsPinned = true
 //        };
-//    [Fact]
-//        public async Task Notes_Post()
-//        {
-//            var content = JsonConvert.SerializeObject(TestNotePost);
-//            var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
-//            var response = await _client.PostAsync("/api/prototype", stringContent);
-//            var responseString = await response.Content.ReadAsStringAsync();
-//            var note = JsonConvert.DeserializeObject<ToDo>(responseString);
-//            Assert.True(TestNotePost.IsEquals(note));
-//        }
 //        [Fact]
 //        public async Task Notes_Get_All()
 //        {
-//            var response = await _client.GetAsync("/api/prototype");
-//            var responseString = await response.Content.ReadAsStringAsync();
-//            var notes = JsonConvert.DeserializeObject<List<ToDo>>(responseString);
-//            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-//        }
-//        [Fact]
-//        public async Task Notes_Get_Specific()
-//        {
-//            var response = await _client.GetAsync("/api/prototype/1");
-//            var responseString = await response.Content.ReadAsStringAsync();
-//            var notes = JsonConvert.DeserializeObject<ToDo>(responseString);
-//            Assert.True(TestNoteNew.IsEquals(notes));
-//        }
-//        [Fact]
-//        public async Task Notes_Get_Query()
-//        {
-//            var response = await _client.GetAsync("/api/prototype/query?ispinned=true");
-//            var responseString = await response.Content.ReadAsStringAsync();
-//            var notes = JsonConvert.DeserializeObject<List<ToDo>>(responseString);
-//            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-//        }
-//        [Fact]
-//        public async Task Notes_Put()
-//        {
-//            var contentChannge = JsonConvert.SerializeObject(TestNoteProper);
-//            var stringContentChange = new StringContent(contentChannge, Encoding.UTF8, "application/json");
-//            var responseChanged = await _client.PutAsync("/api/prototype/1", stringContentChange);
-//            responseChanged.EnsureSuccessStatusCode();
-//            var responseString = await responseChanged.Content.ReadAsStringAsync();
-//            var note = JsonConvert.DeserializeObject<ToDo>(responseString);
-//            Assert.Equal(HttpStatusCode.OK, responseChanged.StatusCode);
-//        }
-//        [Fact]
-//        public async Task Notes_Delete_Specific()
-//        {
-//            var response = await _client.DeleteAsync("api/Prototype/1");
-//            var responsecode = response.StatusCode;
-//            Assert.Equal(HttpStatusCode.NoContent, responsecode);
-//        }
-//        [Fact]
-//        public async Task Notes_Delete_all()
-//        {
-//            var response = await _client.DeleteAsync("api/Prototype/all");
-//            var responsecode = response.StatusCode;
-//            Assert.Equal(HttpStatusCode.NoContent, responsecode);
+//            using (MongoTestServer server = MongoTestServer.Start(27017, new MongodExeLocator()))
+//            {
+//                // ARRANGE
+//                var collection = server.Database.GetCollection<ToDo>("Notes");
+
+//                //    var service = new MyCounterService(collection);
+//                //    await collection.InsertOneAsync(new ToDo
+//                //    {
+//                //        Id = ObjectId.GenerateNewId(),
+//                //        Title = "foo",
+//                //        IsPinned = true
+//                //    });
+
+//                //    // ACT, ASSERT
+//                //    Assert.Throws<InvalidOperationException>(
+//                //        () => service.HasEnoughRating(ObjectId.GenerateNewId().ToString()));
+//                //}
+//                //var response = await _client.GetAsync("/api/prototype");
+//                //var responseString = await response.Content.ReadAsStringAsync();
+//                //var notes = JsonConvert.DeserializeObject<List<ToDo>>(responseString);
+//                //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+//            }
+//            //[Fact]
+//            //public async Task Notes_Post()
+//            //{
+//            //    var content = JsonConvert.SerializeObject(TestNotePost);
+//            //    var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
+//            //    var response = await _client.PostAsync("/api/prototype", stringContent);
+//            //    var responseString = await response.Content.ReadAsStringAsync();
+//            //    var note = JsonConvert.DeserializeObject<ToDo>(responseString);
+//            //    Assert.True(TestNotePost.IsEquals(note));
+//            //}
+//            //[Fact]
+//            //public async Task Notes_Get_All()
+//            //{
+//            //    var response = await _client.GetAsync("/api/prototype");
+//            //    var responseString = await response.Content.ReadAsStringAsync();
+//            //    var notes = JsonConvert.DeserializeObject<List<ToDo>>(responseString);
+//            //    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+//            //}
+//            //[Fact]
+//            //public async Task Notes_Get_Specific()
+//            //{
+//            //    var response = await _client.GetAsync("/api/prototype/1");
+//            //    var responseString = await response.Content.ReadAsStringAsync();
+//            //    var notes = JsonConvert.DeserializeObject<ToDo>(responseString);
+//            //    Assert.True(TestNoteNew.IsEquals(notes));
+//            //}
+//            //[Fact]
+//            //public async Task Notes_Get_Query()
+//            //{
+//            //    var response = await _client.GetAsync("/api/prototype/query?ispinned=true");
+//            //    var responseString = await response.Content.ReadAsStringAsync();
+//            //    var notes = JsonConvert.DeserializeObject<List<ToDo>>(responseString);
+//            //    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+//            //}
+//            //[Fact]
+//            //public async Task Notes_Put()
+//            //{
+//            //    var contentChannge = JsonConvert.SerializeObject(TestNoteProper);
+//            //    var stringContentChange = new StringContent(contentChannge, Encoding.UTF8, "application/json");
+//            //    var responseChanged = await _client.PutAsync("/api/prototype/1", stringContentChange);
+//            //    responseChanged.EnsureSuccessStatusCode();
+//            //    var responseString = await responseChanged.Content.ReadAsStringAsync();
+//            //    var note = JsonConvert.DeserializeObject<ToDo>(responseString);
+//            //    Assert.Equal(HttpStatusCode.OK, responseChanged.StatusCode);
+//            //}
+//            //[Fact]
+//            //public async Task Notes_Delete_Specific()
+//            //{
+//            //    var response = await _client.DeleteAsync("api/Prototype/1");
+//            //    var responsecode = response.StatusCode;
+//            //    Assert.Equal(HttpStatusCode.NoContent, responsecode);
+//            //}
+//            //[Fact]
+//            //public async Task Notes_Delete_all()
+//            //{
+//            //    var response = await _client.DeleteAsync("api/Prototype/all");
+//            //    var responsecode = response.StatusCode;
+//            //    Assert.Equal(HttpStatusCode.NoContent, responsecode);
+//            //}
 //        }
 //    }
 //}

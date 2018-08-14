@@ -12,6 +12,8 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
+    <PackageReference Include="MongoDB.Testing" Version="1.0.0-beta-002" />
     <PackageReference Include="Moq" Version="4.9.0" />
     <PackageReference Include="NSuperTest" Version="0.1.22" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />

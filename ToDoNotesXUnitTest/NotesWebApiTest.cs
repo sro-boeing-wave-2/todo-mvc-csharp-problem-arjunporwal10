@@ -1,177 +1,251 @@
-//using System;
-//using System.Threading.Tasks;
-//using Xunit;
-//using Microsoft.AspNetCore.Mvc;
-//using System.Collections.Generic;
-//using System.Linq;
-//using FluentAssertions;
-//using Moq;
-//using ToDoNotes.Controllers;
-//using ToDoNotes.Services;
-//using Notes.Models;
-//using ToDoNotes.Models;
-//using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
+using Xunit;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using FluentAssertions;
+using Moq;
+using ToDoNotes.Controllers;
+using ToDoNotes.Services;
+using Notes.Models;
+using ToDoNotes.Models;
+using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
+using ToDoNotes.Wrappers;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 
-//namespace ToDoNotesXUnitTest
-//{
-//    public class NotesWebAPITests
-//    {
-//        public PrototypeController GetController()
-//        {
-//            // Console.WriteLine("Get Controller");
-//            var optionsBuilder = new DbContextOptionsBuilder<PrototypeContext>();
-//            optionsBuilder.UseInMemoryDatabase<PrototypeContext>(Guid.NewGuid().ToString());
-//            PrototypeContext prototypeContext = new PrototypeContext(optionsBuilder.Options);
-//            CreateData(optionsBuilder.Options);
-//            return new PrototypeController(prototypeContext);
-//        }
+namespace ToDoNotesXUnitTest
+{
+    public class NotesWebAPITests
+    {
+        public ObjectId Id1 = ObjectId.GenerateNewId();
+        public ObjectId Id2 = ObjectId.GenerateNewId();
+        public ToDo NoteToPost =  new ToDo()
+        {
+            Id = new ObjectId("5b71298a6a2e663634872a65"),
+            NotesId =3,
+                    Text = "Ronnie",
+                    IsPinned = false,
+                    Title = "SooBar",
+                    Labels = new List<Label>
+                    {
+                        new Label{LabelName="blue label"},
+                        new Label{LabelName="juice"}
+                    },
+                    CheckLists = new List<Checklist>
+                    {
+                        new Checklist{ChecklistData="soda",IsChecked=false},
+                        new Checklist {ChecklistData="water",IsChecked=false}
 
-//        public void CreateData(DbContextOptions<PrototypeContext> options)
-//        {
-//            using (var prototypeContext = new PrototypeContext(options))
-//            {
-//                var NotesToAdd = new List<ToDo>
-//            {
-//                new ToDo()
-//                {
-//                    Id = 1,
-//                    Text = "John",
-//                    IsPinned = true,
-//                    Title = "FooBar",
-//                    Labels = new List<Label>
-//                    {
-//                        new Label{LabelName="red label"},
-//                        new Label{LabelName="black label"}
-//                    },
-//                    CheckLists=new List<Checklist>
-//                    {
-//                        new Checklist{ChecklistData="soda",IsChecked=true},
-//                        new Checklist {ChecklistData="water",IsChecked=false}
+                    }
+                
+        };
+    public class FakeDataAccess : IDataAccess
+        {
+            MongoClient _client;
+            MongoServer _server;
+            MongoDatabase _db;
 
-//                    }
-//                },
-//                new ToDo()
-//                {
-//                    Id = 2,
-//                    Text = "Ronnie",
-//                    IsPinned = false,
-//                    Title = "SooBar",
-//                    Labels = new List<Label>
-//                    {
-//                        new Label{LabelName="blue label"},
-//                        new Label{LabelName="juice"}
-//                    },
-//                    CheckLists=new List<Checklist>
-//                    {
-//                        new Checklist{ChecklistData="soda",IsChecked=false},
-//                        new Checklist {ChecklistData="water",IsChecked=false}
+            public FakeDataAccess()
+            {
+                _client = new MongoClient("mongodb://localhost:27017");
+                _server = _client.GetServer();
+                _db = _server.GetDatabase("ToDoNotes");
+            }
 
-//                    }
-//                }
-//            };
-//                prototypeContext.ToDo.AddRange(NotesToAdd);
-//                var CountOfEntitiesBeingTracked = prototypeContext.ChangeTracker.Entries().Count();
-//                prototypeContext.SaveChanges();
-//            }
-//        }
+            public IEnumerable<ToDo> GetNotes()
+            {
+                var NotesToAdd = new List<ToDo>
+            {
+                new ToDo()
+                {
+                   Id = new ObjectId("5b71298a6a2e663634872a61"),
+                    Text = "John",
+                    IsPinned = true,
+                    Title = "FooBar",
+                    Labels = new List<Label>
+                    {
+                        new Label{LabelName="red label"},
+                        new Label{LabelName="black label"}
+                    },
+                    CheckLists=new List<Checklist>
+                    {
+                        new Checklist{ChecklistData="soda",IsChecked=true},
+                        new Checklist {ChecklistData="water",IsChecked=false}
 
-//        [Fact]
-//        public void TestGetByPinnedAndLabel()
-//        {
-//            var _controller = GetController();
-//            var result = _controller.GetByQuery(true, "", "");
-//            var objectresult = result.Result as OkObjectResult;
-//            var notes = objectresult.Value as List<ToDo>;
-//            Assert.Equal(1, notes.Count());
-//        }
-//        [Fact]
-//        public async Task TestGetById()
-//        {
-//            var _controller = GetController();
-//            var result = await _controller.GetToDo(1);
-//            var objectresult = result as OkObjectResult;
-//            var notes = objectresult.Value as ToDo;
-//            Assert.Equal(1, notes.Id);
-//        }
+                    }
+                },
+                new ToDo()
+                {
+                    Id = new ObjectId("5b71298a6a2e663634872a62"),
+                    Text = "Ronnie",
+                    IsPinned = false,
+                    Title = "SooBar",
+                    Labels = new List<Label>
+                    {
+                        new Label{LabelName="blue label"},
+                        new Label{LabelName="juice"}
+                    },
+                    CheckLists=new List<Checklist>
+                    {
+                        new Checklist{ChecklistData="soda",IsChecked=false},
+                        new Checklist {ChecklistData="water",IsChecked=false}
 
-//        [Fact]
-//        public async Task TestGetAll()
-//        {
-//            var _controller = GetController();
-//            var result = await _controller.Get();
-//            var objectresult = result as OkObjectResult;
-//            var notes = objectresult.Value as List<ToDo>;
-//            Assert.Equal(2, notes.Count());
-//        }
+                    }
+                } };
+                return NotesToAdd;
+            }
 
-//        [Fact]
-//        public async Task TestPutMethod()
-//        {
-//            var TestNotePut = new ToDo()
-//            {
-//                Id = 1,
-//                Text = "Johnny",
-//                IsPinned = true,
-//                Title = "FooBar",
-//                Labels = new List<Label>
-//                    {
-//                        new Label{LabelName="red label"},
-//                        new Label{LabelName="black label"}
-//                    },
-//                CheckLists = new List<Checklist>
-//                    {
-//                        new Checklist{ChecklistData="soda",IsChecked=true},
-//                        new Checklist {ChecklistData="water",IsChecked=false}
+            public IEnumerable<ToDo> GetNotesByQuery(bool? Ispinned = null, string title = "", string labelName = "")
+            {
+                return _db.GetCollection<ToDo>("Notes").FindAll().Where(
+                    m => ((title == "") || (m.Title == title)) && ((!Ispinned.HasValue) || (m.IsPinned == Ispinned)) && ((labelName == "") || (m.Labels).Any(b => b.LabelName == labelName)));
+            }
 
-//                    }
-//            };
-//            var _controller = GetController();
-//            var result = await _controller.PutToDo(1, TestNotePut);
-//            var objectresult = result as OkObjectResult;
-//            var notes = objectresult.Value as ToDo;
-//            Assert.Equal(1, notes.Id);
-//        }
-//        [Fact]
-//        public void TestPostMethod()
-//        {
-//            var TestNotePost = new ToDo()
-//            {
+            public ToDo GetNote(ObjectId id)
+            {
+                ToDo findNote =  new ToDo
+                {
+                    Id = new ObjectId("5b71298a6a2e663634872a62"),
+                    Text = "Ronnie",
+                    IsPinned = false,
+                    Title = "SooBar",
+                    Labels = new List<Label>
+                    {
+                        new Label{LabelName="blue label"},
+                        new Label{LabelName="juice"}
+                    },
+                    CheckLists = new List<Checklist>
+                    {
+                        new Checklist{ChecklistData="soda",IsChecked=false},
+                        new Checklist {ChecklistData="water",IsChecked=false}
 
-//                Text = "Rohnny",
-//                IsPinned = true,
-//                Title = "FooBar",
-//                Labels = new List<Label>
-//                    {
-//                        new Label{LabelName="red label"},
-//                        new Label{LabelName="black label"}
-//                    },
-//                CheckLists = new List<Checklist>
-//                    {
-//                        new Checklist{ChecklistData="soda",IsChecked=true},
-//                        new Checklist {ChecklistData="water",IsChecked=false}
+                    }
+                };
+                return findNote;
+            }
 
-//                    }
-//            };
-//            var _controller = GetController();
-//            var result = _controller.PostToDo(TestNotePost);
-//            var objectresult = result.IsCompleted;
-//            Assert.True(objectresult);
-//        }
+            public ToDo Create(ToDo p)
+            {
+                _db.GetCollection<ToDo>("Notes").Save(p);
+                return p;
+            }
 
-//        [Fact]
-//        public void TestDeleteMethod()
-//        {
-//            var _controller = GetController();
-//            var result = _controller.DeleteToDo(1);
-//            Assert.True(result.IsCompletedSuccessfully);
-//        }
-//        [Fact]
-//        public void TestDeleteAllMethod()
-//        {
-//            var _controller = GetController();
-//            var result = _controller.DeleteAll();
-//            Assert.True(result.IsCompletedSuccessfully);
-//        }
+            public void Update(ObjectId id, ToDo p)
+            {
+                p.Id = id;
+                var res = Query<ToDo>.EQ(pd => pd.Id, id);
+                var operation = Update<ToDo>.Replace(p);
+                _db.GetCollection<ToDo>("Notes").Update(res, operation);
+            }
+            public void Remove(ObjectId id)
+            {
+                var res = Query<ToDo>.EQ(e => e.Id, id);
+                var operation = _db.GetCollection<ToDo>("Notes").Remove(res);
+            }
+        }
+        //private readonly FakeDataAccess _fakeData;
+        //private PrototypeController _controller;
+        //public NotesWebAPITests (FakeDataAccess fakeData)
+        //{
+        //    _fakeData = fakeData;
+        //    _controller = new PrototypeController(_fakeData);
+        //}
 
-//    }
-//}
+        //[Fact]
+        //public void TestGetByPinnedAndLabel()
+        //{
+        //    var _controller = GetController();
+        //    var result = _controller.GetNotesByQuery(true, "", "");
+        //    //var objectresult = result.Result as OkObjectResult;
+        //    //var notes = objectresult.Value as List<ToDo>;
+        //    //Assert.Equal(1, notes.Count());
+        //}
+        
+
+        [Fact]
+        public void TestGetAll()
+        {
+            FakeDataAccess fakeData = new FakeDataAccess();
+            PrototypeController _controller = new PrototypeController(fakeData);
+            var result = _controller.Get();
+            Assert.Equal(2, result.Count());
+        }
+        [Fact]
+        public void PostNote()
+        {
+            FakeDataAccess fakeData = new FakeDataAccess();
+            PrototypeController _controller = new PrototypeController(fakeData);
+            var result = _controller.Post(NoteToPost);
+            var notePosted = result as OkObjectResult;
+            var note = notePosted.Value as ToDo;
+            Assert.Equal(3, note.NotesId);
+        }
+        [Fact]
+        public void TestGetById()
+        {
+            var objId = new ObjectId("5b71298a6a2e663634872a62");
+            FakeDataAccess fakeData = new FakeDataAccess();
+            PrototypeController _controller = new PrototypeController(fakeData);
+            var result = _controller.GetNotesById("5b71298a6a2e663634872a62");
+            var notePosted = result as ObjectResult;
+            var note = notePosted.Value as ToDo;
+            Assert.Equal(objId, note.Id);
+        }
+        //[Fact]
+        //public void TestGetByQuery()
+        //{
+        //    var objId = new ObjectId("5b71298a6a2e663634872a61");
+        //    FakeDataAccess fakeData = new FakeDataAccess();
+        //    PrototypeController _controller = new PrototypeController(fakeData);
+        //    var result = _controller.GetNotesByQuery(true,"","");
+        //    var notePosted = result as ObjectResult;
+        //    var note = notePosted.Value as ToDo;
+        //    Assert.Equal(objId, note.Id);
+        //}
+
+        [Fact]
+        public void TestPutMethod()
+        {
+            var TestNotePut = new ToDo()
+            {
+                Id = new ObjectId("5b71298a6a2e663634872a62"),
+                Text = "Johnny",
+                IsPinned = true,
+                Title = "FooBar",
+                Labels = new List<Label>
+                    {
+                        new Label{LabelName="red label"},
+                        new Label{LabelName="black label"}
+                    },
+                CheckLists = new List<Checklist>
+                    {
+                        new Checklist{ChecklistData="soda",IsChecked=true},
+                        new Checklist {ChecklistData="water",IsChecked=false}
+
+                    }
+            };
+            var objId = new ObjectId("5b71298a6a2e663634872a62");
+            FakeDataAccess fakeData = new FakeDataAccess();
+            PrototypeController _controller = new PrototypeController(fakeData);
+            var result = _controller.Put("5b71298a6a2e663634872a62",TestNotePut);
+            var notePosted = result as OkResult;
+            Assert.Equal(200, notePosted.StatusCode);
+        }
+        [Fact]
+        public void TestDeleteMethod()
+        {
+            var objId = new ObjectId("5b71298a6a2e663634872a62");
+            FakeDataAccess fakeData = new FakeDataAccess();
+            PrototypeController _controller = new PrototypeController(fakeData);
+            var result = _controller.Delete("5b71298a6a2e663634872a62");
+            var notePosted = result as OkResult;
+            Assert.Equal(200, notePosted.StatusCode);
+        }
+        
+
+    }
+    }
+

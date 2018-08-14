@@ -16,9 +16,9 @@ namespace ToDoNotes.Controllers
     [ApiController]
     public class PrototypeController : ControllerBase
     {
-        DataAccess objds;
-
-        public PrototypeController(DataAccess d)
+        //DataAccess objds;
+        private IDataAccess objds;
+        public PrototypeController(IDataAccess d)
         {
             objds = d;
         }
@@ -29,7 +29,7 @@ namespace ToDoNotes.Controllers
             return objds.GetNotes();
         }
         [HttpGet("{id:length(24)}")]
-        public IActionResult Get(string id)
+        public IActionResult GetNotesById(string id)
         {
             var note = objds.GetNote(new ObjectId(id));
             if (note == null)
