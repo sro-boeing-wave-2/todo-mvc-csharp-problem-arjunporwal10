@@ -100,8 +100,28 @@ namespace ToDoNotesXUnitTest
 
             public IEnumerable<ToDo> GetNotesByQuery(bool? Ispinned = null, string title = "", string labelName = "")
             {
-                return _db.GetCollection<ToDo>("Notes").FindAll().Where(
-                    m => ((title == "") || (m.Title == title)) && ((!Ispinned.HasValue) || (m.IsPinned == Ispinned)) && ((labelName == "") || (m.Labels).Any(b => b.LabelName == labelName)));
+                List<ToDo> findNote = new List<ToDo>
+                {new ToDo
+                {
+                    Id = new ObjectId("5b71298a6a2e663634872a62"),
+                    Text = "Ronnie",
+                    IsPinned = false,
+                    Title = "SooBar",
+                    Labels = new List<Label>
+                    {
+                        new Label{LabelName="blue label"},
+                        new Label{LabelName="juice"}
+                    },
+                    CheckLists = new List<Checklist>
+                    {
+                        new Checklist{ChecklistData="soda",IsChecked=false},
+                        new Checklist {ChecklistData="water",IsChecked=false}
+
+                    }
+                }
+                    
+                };
+                return findNote;
             }
 
             public ToDo GetNote(ObjectId id)
@@ -129,30 +149,36 @@ namespace ToDoNotesXUnitTest
 
             public ToDo Create(ToDo p)
             {
-                _db.GetCollection<ToDo>("Notes").Save(p);
-                return p;
+                ToDo findNote = new ToDo
+                {
+                    Id = new ObjectId("5b71298a6a2e663634872a65"),
+                    Text = "Ronnie",
+                    IsPinned = false,
+                    Title = "SooBar",
+                    Labels = new List<Label>
+                    {
+                        new Label{LabelName="blue label"},
+                        new Label{LabelName="juice"}
+                    },
+                    CheckLists = new List<Checklist>
+                    {
+                        new Checklist{ChecklistData="soda",IsChecked=false},
+                        new Checklist {ChecklistData="water",IsChecked=false}
+
+                    }
+                };
+                return findNote;
             }
 
             public void Update(ObjectId id, ToDo p)
             {
-                p.Id = id;
-                var res = Query<ToDo>.EQ(pd => pd.Id, id);
-                var operation = Update<ToDo>.Replace(p);
-                _db.GetCollection<ToDo>("Notes").Update(res, operation);
+                
             }
             public void Remove(ObjectId id)
             {
-                var res = Query<ToDo>.EQ(e => e.Id, id);
-                var operation = _db.GetCollection<ToDo>("Notes").Remove(res);
+               
             }
         }
-        //private readonly FakeDataAccess _fakeData;
-        //private PrototypeController _controller;
-        //public NotesWebAPITests (FakeDataAccess fakeData)
-        //{
-        //    _fakeData = fakeData;
-        //    _controller = new PrototypeController(_fakeData);
-        //}
 
         //[Fact]
         //public void TestGetByPinnedAndLabel()
@@ -194,17 +220,17 @@ namespace ToDoNotesXUnitTest
             var note = notePosted.Value as ToDo;
             Assert.Equal(objId, note.Id);
         }
-        //[Fact]
-        //public void TestGetByQuery()
-        //{
-        //    var objId = new ObjectId("5b71298a6a2e663634872a61");
-        //    FakeDataAccess fakeData = new FakeDataAccess();
-        //    PrototypeController _controller = new PrototypeController(fakeData);
-        //    var result = _controller.GetNotesByQuery(true,"","");
-        //    var notePosted = result as ObjectResult;
-        //    var note = notePosted.Value as ToDo;
-        //    Assert.Equal(objId, note.Id);
-        //}
+        [Fact]
+        public void TestGetByQuery()
+        {
+            var objId = new ObjectId("5b71298a6a2e663634872a61");
+            FakeDataAccess fakeData = new FakeDataAccess();
+            PrototypeController _controller = new PrototypeController(fakeData);
+            var result = _controller.GetNotesByQuery(true, "", "");
+            var notePosted = result as ObjectResult;
+            var note = notePosted.Value as List<ToDo>;
+            Assert.Equal(1,note.Count);
+        }
 
         [Fact]
         public void TestPutMethod()
