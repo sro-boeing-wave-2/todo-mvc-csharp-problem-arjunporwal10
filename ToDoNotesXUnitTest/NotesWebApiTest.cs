@@ -44,18 +44,7 @@ namespace ToDoNotesXUnitTest
         };
     public class FakeDataAccess : IDataAccess
         {
-            MongoClient _client;
-            MongoServer _server;
-            MongoDatabase _db;
-
-            public FakeDataAccess()
-            {
-                _client = new MongoClient("mongodb://localhost:27017");
-                _server = _client.GetServer();
-                _db = _server.GetDatabase("ToDoNotes");
-            }
-
-            public IEnumerable<ToDo> GetNotes()
+          public IEnumerable<ToDo> GetNotes()
             {
                 var NotesToAdd = new List<ToDo>
             {
@@ -178,18 +167,7 @@ namespace ToDoNotesXUnitTest
             {
                
             }
-        }
-
-        //[Fact]
-        //public void TestGetByPinnedAndLabel()
-        //{
-        //    var _controller = GetController();
-        //    var result = _controller.GetNotesByQuery(true, "", "");
-        //    //var objectresult = result.Result as OkObjectResult;
-        //    //var notes = objectresult.Value as List<ToDo>;
-        //    //Assert.Equal(1, notes.Count());
-        //}
-        
+        }      
 
         [Fact]
         public void TestGetAll()
